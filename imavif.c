@@ -56,18 +56,18 @@ i_writeavif_multi(io_glue *ig, i_img **imgs, int count) {
       
     case 1:
     case 2:
-    case 3:
       /* FIXME: implement these */
       im_push_errorf(aIMCTX, 0, "%d channel images not implemented", im->channels);
       goto fail;
       
+    case 3:
     case 4:
       {
         unsigned char *pdata;
         i_img_dim y;
         avif_image = avifImageCreate(im->xsize, im->ysize, depth, AVIF_PIXEL_FORMAT_YUV444);
         avifRGBImageSetDefaults(&rgb, avif_image);
-        rgb.format = AVIF_RGB_FORMAT_RGBA;
+        rgb.format = im->channels == 3 ? AVIF_RGB_FORMAT_RGB : AVIF_RGB_FORMAT_RGBA;
         avifRGBImageAllocatePixels(&rgb);
         for (y = 0, pdata = rgb.pixels; y < im->ysize; ++y, pdata += rgb.rowBytes) {
           i_gsamp(im, 0, im->xsize, y, pdata, NULL, im->channels);
