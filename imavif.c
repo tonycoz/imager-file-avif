@@ -28,8 +28,12 @@ i_writeavif_multi(io_glue *ig, i_img **imgs, int count) {
   avifRWData out = AVIF_DATA_EMPTY;
   int i;
   avifResult result;
+  avifImage **saved_images = NULL;
+  int saved_image_count = 0;
 
   im_clear_error(aIMCTX);
+
+  saved_images = mymalloc(sizeof(avifImage*) * count);
 
   avif = avifEncoderCreate(); /* aborts on failure */
 
@@ -84,7 +88,7 @@ i_writeavif_multi(io_glue *ig, i_img **imgs, int count) {
           im_push_errorf(aIMCTX, result, "Failed to add image to encoder: %s", avifResultToString(result));
           goto failimage;
         }
-        /* FIXME: how long do we need to keep the image? */
+        saved_images[saved_image_count++] = avif_image;
         break;
       }
     }
@@ -103,11 +107,18 @@ i_writeavif_multi(io_glue *ig, i_img **imgs, int count) {
   }
   if (i_io_close(ig))
     goto fail;
-  
+  while (saved_image_count > 0) {
+    avifImageDestroy(saved_images[--saved_image_count]);
+  }
+  myfree(saved_images);
   avifRWDataFree(&out);
   avifEncoderDestroy(avif);
   return 1;
+
  fail:
+  while (saved_image_count > 0) {
+    avifImageDestroy(saved_images[--saved_image_count]);
+  }
   avifRWDataFree(&out);
   avifEncoderDestroy(avif);
   return 0;
