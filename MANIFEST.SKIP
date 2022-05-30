@@ -17,4 +17,4 @@ blib
 ^\.git
 ^MANIFEST\.bak$
 
-^[^/\\]+\.(png|avif|jpe?g)$
+^[^/\\]+\.(png|avifs?|jpe?g)$

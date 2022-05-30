@@ -88,13 +88,16 @@ i_writeavif_multi(ig, ...)
 MODULE = Imager::File::AVIF PACKAGE = Imager::File::AVIF  PREFIX = i_avif_
 
 const char *
-i_avif_libversion()
+i_avif_libversion(cls)
+    C_ARGS:
 
 const char *
-i_avif_buildversion()
+i_avif_buildversion(cls)
+    C_ARGS:
 
 const char *
-i_avif_codecs()
+i_avif_codecs(cls)
+    C_ARGS:
 
 
 BOOT:
