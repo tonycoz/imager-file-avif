@@ -185,7 +185,7 @@ writing.
 Returns the version of the C<libavif> library Imager::File::AVIF was
 built with.
 
-  print Imager::File::AFIF->buildversion, "\n";
+  print Imager::File::AVIF->buildversion, "\n";
 
 =item libversion()
 
@@ -193,7 +193,7 @@ Returns the version of the C<libavif> library Imager::File::AVIF is
 linked with.  This may be different to buildversion() if C<libavif> is
 dynamically linked.
 
-  print Imager::File::AFIF->libversion, "\n";
+  print Imager::File::AVIF->libversion, "\n";
 
 =item codecs()
 
@@ -205,7 +205,7 @@ like:
 An entry with C<dec> is required to be able to read AVIF images, and
 an entry with C<enc> is required to be able to write AVIF images.
 
-  print Imager::File::AFIF->codecs, "\n";
+  print Imager::File::AVIF->codecs, "\n";
 
 =back
 
@@ -215,7 +215,14 @@ To install Imager::File::AVIF you need Imager installed and you need
 C<libavif> installed, along with it's development headers.
 
 Note that the C<libavif> included with Debian bullseye was not built
-with a write compatible codec.
+with a write compatible codec, but C<libavif> from bullseye-backports
+does include a write compatible codec.
+
+If you've installed C<libavif> outside the normal places, install
+C<pkg-config> and set C<PKG_CONFIG_PATH> to the directory containing
+the installed F<libavif.pc> when running C<Makefile.PL>, for example:
+
+  PKG_CONFIG_PATH=/home/tony/local/libavif-0.10.1/lib/pkgconfig/ perl Makefile.PL
 
 =head1 AUTHOR
 
